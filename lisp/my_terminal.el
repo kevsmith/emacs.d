@@ -1,0 +1,20 @@
+(require 'multi-term)
+
+(add-hook 'term-mode-hook
+          (lambda()
+            (setq term-buffer-maximum-size 10000)
+            (setq show-trailing-whitespace nil)
+            (autopair-mode -1)
+            (add-to-list 'term-bind-key-alist '("M-[" . multi-term-prev))
+            (add-to-list 'term-bind-key-alist '("M-]" . multi-term-next))
+            (define-key term-raw-map (kbd "C-y") 'term-paste)
+            (linum-mode -1)
+            (defun term-send-up ()
+              (interactive)
+              (term-send-raw-string "\e[A"))
+            (defun term-send-down ()
+              (interactive)
+              (term-send-raw-string "\e[B"))
+            (goto-address-mode)))
+
+(provide 'my_terminal)
